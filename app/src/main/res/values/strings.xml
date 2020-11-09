@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AAD-WorkManager</string>
+    <string name="btn_start_work">Start Work</string>
+</resources>
