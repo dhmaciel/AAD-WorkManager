@@ -4,7 +4,6 @@ import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
-import android.view.View
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
@@ -25,15 +24,16 @@ class ImageWorker(context: Context, workerParams: WorkerParameters) :
     }
 
     private fun downloadImage(url: String): String {
-        val title = getRandomImageName()
-        //showDownloadNotification(title)
+        val imageName = getRandomImageName()
+        showDownloadNotification(imageName)
 
         val downloadManager: DownloadManager =
             applicationContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
         val request: DownloadManager.Request = DownloadManager.Request(Uri.parse(url))
-        val id = downloadManager.enqueue(request)
-        return title
+        request.setDestinationInExternalFilesDir(applicationContext ,Environment.DIRECTORY_DOWNLOADS, imageName)
+        downloadManager.enqueue(request)
+        return imageName
     }
 
     //TODO: Moves to extension

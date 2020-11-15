@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.aad_workmanager.databinding.ActivityMainBinding
+import com.example.aad_workmanager.notification.NotificationCenter
 import com.example.aad_workmanager.ui.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        NotificationCenter().createNotificationChanel(this)
         bindView()
         showToast("Welcome :)")
     }
