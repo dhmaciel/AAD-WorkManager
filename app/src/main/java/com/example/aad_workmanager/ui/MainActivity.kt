@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        NotificationCenter().createNotificationChanel(this)
+        NotificationCenter.createNotificationChanel(this)
         bindView()
         showToast("Welcome :)")
     }
@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private fun bindView() {
         binding.btnWork.setOnClickListener {
             showLoading()
+            NotificationCenter.cancelNotification(NotificationCenter.NOTIFICATION_ID, this)
             viewModel.getRandomImage()
             observerData()
         }
@@ -42,10 +43,13 @@ class MainActivity : AppCompatActivity() {
                 when (it.state) {
                     WorkInfo.State.SUCCEEDED -> {
                         showSnackBar("${it.outputData} in your download path")
-                        hideLoading()}
+                        NotificationCenter.updateNotification(this)
+                        hideLoading()
+                    }
                     WorkInfo.State.FAILED -> {
                         showToast("Error on worker")
-                        hideLoading()}
+                        hideLoading()
+                    }
                     else -> return@observe
                 }
             })

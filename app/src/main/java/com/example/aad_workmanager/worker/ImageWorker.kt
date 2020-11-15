@@ -31,7 +31,11 @@ class ImageWorker(context: Context, workerParams: WorkerParameters) :
             applicationContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
         val request: DownloadManager.Request = DownloadManager.Request(Uri.parse(url))
-        request.setDestinationInExternalFilesDir(applicationContext ,Environment.DIRECTORY_DOWNLOADS, imageName)
+        request.setDestinationInExternalFilesDir(
+            applicationContext,
+            Environment.DIRECTORY_DOWNLOADS,
+            imageName
+        )
         downloadManager.enqueue(request)
         return imageName
     }
@@ -40,7 +44,7 @@ class ImageWorker(context: Context, workerParams: WorkerParameters) :
     private fun getRandomImageName() = "${Date().time}.jpg"
 
     private fun showDownloadNotification(imageTitle: String) =
-        NotificationCenter().showSimpleNotification(
+        NotificationCenter.showSimpleNotification(
             applicationContext,
             "Download image...",
             imageTitle
