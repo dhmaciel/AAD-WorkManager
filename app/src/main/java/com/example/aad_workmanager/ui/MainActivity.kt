@@ -1,5 +1,6 @@
 package com.example.aad_workmanager.ui
 
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -7,14 +8,16 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.example.aad_workmanager.broadcast_receiver.NotificationReceiver
 import com.example.aad_workmanager.databinding.ActivityMainBinding
 import com.example.aad_workmanager.notification.NotificationCenter
-import com.example.aad_workmanager.ui.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val notificationReceiver = NotificationReceiver()
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -24,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         NotificationCenter.createNotificationChanel(this)
+        registerReceiver(notificationReceiver, IntentFilter(NotificationReceiver.ACTION_UPDATE_NOTIFICATION))
+
         bindView()
         showToast("Welcome :)")
     }
@@ -71,5 +76,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSnackBar(text: String) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(notificationReceiver)
+        super.onDestroy()
     }
 }
